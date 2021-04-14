@@ -1,47 +1,34 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Header from "../layout/Header";
+import Footer from "../layout/Footer";
+// pages
+import Home from "../pages/Home";
+import About from "../pages/About";
+import Projectlist from "../pages/Project/Projectlist";
 class App extends Component {
     state = {
-        counter: 0
-    };
-
-    incrementCounter = () => {
-        let counter = this.state.counter + 1;
-        this.setState({
-            counter
-        });
-    };
-
-    decrementCounter = () => {
-        let counter = this.state.counter - 1;
-        this.setState({
-            counter
-        });
+        PUBLIC_URL: "/laravel-react-mytask/"
     };
 
     render() {
         return (
-            <div>
-                <div className="container mt-5">
-                    <h2>Count: {this.state.counter}</h2>
-                    <p>
-                        <button
-                            className="btn btn-success btn-lg"
-                            onClick={() => this.incrementCounter()}
-                        >
-                            +
-                        </button>
-
-                        <button
-                            className="btn btn-danger btn-lg ml-2"
-                            onClick={() => this.decrementCounter()}
-                        >
-                            -
-                        </button>
-                    </p>
-                </div>
-            </div>
+            <Router>
+                <Header />
+                <Switch>
+                    <Route path={`${this.state.PUBLIC_URL}about`} exact>
+                        <About />
+                    </Route>
+                    <Route path={`${this.state.PUBLIC_URL}`} exact>
+                        <Home />
+                    </Route>
+                    <Route path={`${this.state.PUBLIC_URL}project`} exact>
+                        <Projectlist />
+                    </Route>
+                </Switch>
+                <Footer />
+            </Router>
         );
     }
 }
