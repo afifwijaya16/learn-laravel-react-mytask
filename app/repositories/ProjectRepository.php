@@ -10,7 +10,7 @@ class ProjectRepository implements CrudInterface
 {
     public function getAll()
     {
-        $projects = Project::all();
+        $projects = Project::withCount('tasks')->orderBy('id','desc')->get();
         return $projects;
     }
     public function findById($id)

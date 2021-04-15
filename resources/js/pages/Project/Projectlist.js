@@ -1,6 +1,8 @@
 import React from "react";
 import { Container, Button, Card, Badge, Spinner } from "react-bootstrap";
-import Axios from "axios";
+import { Link } from "react-router-dom";
+import { getApiProjectLists } from "../../service/projectservice";
+import { PUBLIC_URL } from "../../constant";
 class Projectlist extends React.Component {
     state = {
         projectList: [],
@@ -12,21 +14,35 @@ class Projectlist extends React.Component {
 
     getProjectLists = () => {
         this.setState({ isLoading: true });
-        Axios.get("http://localhost/laravel-react-mytask/api/projects").then(
-            res => {
-                const projectList = res.data.data;
-                this.setState({
-                    projectList,
-                    isLoading: false
-                });
-            }
-        );
+        getApiProjectLists().then(res => {
+            const projectList = res.data.data;
+            this.setState({
+                projectList,
+                isLoading: false
+            });
+        });
     };
     render() {
         return (
             <>
-                <Container className="mt-4">
-                    <h5>Project List</h5>
+                <Container className="mt-4" style={{ marginBottom: "70px" }}>
+                    <div className="d-flex justify-content-between">
+                        <div>
+                            <h5>
+                                Project List{" "}
+                                <Badge variant="primary">
+                                    {this.state.projectList.length}
+                                </Badge>
+                            </h5>
+                        </div>
+                        <div>
+                            <Link to={`${PUBLIC_URL}project/create`}>
+                                <div className="btn btn-xs btn-primary">
+                                    + Add Data
+                                </div>
+                            </Link>
+                        </div>
+                    </div>
                     <hr />
                     {this.state.isLoading && (
                         <div className="text-center mt-5">

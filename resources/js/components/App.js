@@ -7,24 +7,26 @@ import Footer from "../layout/Footer";
 import Home from "../pages/Home";
 import About from "../pages/About";
 import Projectlist from "../pages/Project/Projectlist";
+import Projectcreate from "../pages/Project/Projectcreate";
+import { PUBLIC_URL } from "../constant";
 class App extends Component {
-    state = {
-        PUBLIC_URL: "/laravel-react-mytask/"
-    };
-
     render() {
         return (
             <Router>
                 <Header />
                 <Switch>
-                    <Route path={`${this.state.PUBLIC_URL}about`} exact>
+                    <Route path={`${PUBLIC_URL}about`} exact>
                         <About />
                     </Route>
-                    <Route path={`${this.state.PUBLIC_URL}`} exact>
+                    <Route path={`${PUBLIC_URL}`} exact>
                         <Home />
                     </Route>
-                    <Route path={`${this.state.PUBLIC_URL}project`} exact>
+                    {/* project */}
+                    <Route path={`${PUBLIC_URL}project`} exact>
                         <Projectlist />
+                    </Route>
+                    <Route path={`${PUBLIC_URL}project/create`} exact>
+                        <Projectcreate />
                     </Route>
                 </Switch>
                 <Footer />
