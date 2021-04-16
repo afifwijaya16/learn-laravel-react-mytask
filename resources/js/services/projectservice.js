@@ -15,3 +15,12 @@ export const storeApiNewProject = async data => {
         return res.data;
     });
 };
+export const updateApiProject = async (data, id) => {
+    data.user_id = 1;
+    return await Axios.put(
+        `http://localhost/laravel-react-mytask/api/projects/${id}`,
+        data
+    ).then(res => {
+        return res.data;
+    });
+};

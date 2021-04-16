@@ -5,12 +5,14 @@ import { getApiProjectDetail } from "../../services/projectservice";
 import { PUBLIC_URL } from "../../constant";
 import Taskcreate from "../Task/Taskcreate";
 import Tasklist from "../Task/Tasklist";
+import Projectedit from "./Projectedit";
 class Projectview extends React.Component {
     state = {
         projectDetail: {},
         tasksList: [],
         isLoading: false,
-        toggleAddTask: false
+        toggleAddTask: false,
+        toggleEditProject: false
     };
 
     componentDidMount() {
@@ -31,6 +33,7 @@ class Projectview extends React.Component {
 
     toggleAddTask = () => {
         this.setState({
+            toggleEditProject: false,
             toggleAddTask: !this.state.toggleAddTask
         });
     };
@@ -44,31 +47,47 @@ class Projectview extends React.Component {
         });
     };
 
+    toggleEditProject = () => {
+        this.setState({
+            toggleAddTask: false,
+            toggleEditProject: !this.state.toggleEditProject
+        });
+    };
+
+    onCompleteProjectEdit = () => {
+        this.setState({
+            toggleAddTask: false
+        });
+        this.getProjectDetail();
+        this.toggleEditProject();
+    };
+
     render() {
         return (
             <>
                 <Container className="mt-4" style={{ marginBottom: "70px" }}>
-                    <div className="d-flex justify-content-between">
-                        <div>
-                            <h5>
-                                {this.state.projectDetail.name}{" "}
-                                <Badge variant="primary">
-                                    {this.state.tasksList.length}
-                                </Badge>
-                            </h5>
-                        </div>
+                    <div className="d-flex justify-content-end my-2">
                         <div>
                             <Link to={`${PUBLIC_URL}project`}>
-                                <div className="btn btn-xs btn-danger mr-2">
+                                <div className="btn btn-sm btn-danger mr-2">
                                     <i className="fa fa-arrow-left"></i> Back To
                                     All Project
                                 </div>
                             </Link>
-                            <Button className="btn btn-xs btn-warning mr-2">
-                                Edit
+
+                            <Button
+                                className="btn btn-sm btn-warning mr-2"
+                                onClick={() => this.toggleEditProject()}
+                            >
+                                {!this.state.toggleEditProject && (
+                                    <span>Edit Project</span>
+                                )}
+                                {this.state.toggleEditProject && (
+                                    <span>Cancel Edit Project</span>
+                                )}
                             </Button>
                             <Button
-                                className="btn btn-xs btn-primary"
+                                className="btn btn-sm btn-primary"
                                 onClick={() => this.toggleAddTask()}
                             >
                                 {!this.state.toggleAddTask && (
@@ -80,7 +99,39 @@ class Projectview extends React.Component {
                             </Button>
                         </div>
                     </div>
-                    <div>{this.state.projectDetail.description}</div>
+                    {!this.state.toggleEditProject && (
+                        <div>
+                            <div>
+                                <h5>
+                                    {this.state.projectDetail.name}{" "}
+                                    <Badge variant="primary">
+                                        {this.state.tasksList.length}
+                                    </Badge>
+                                </h5>
+                            </div>
+                            <div>
+                                {this.state.projectDetail.status === 1 && (
+                                    <span className="text-success">
+                                        <i className="fa fa-check"></i> Complete
+                                    </span>
+                                )}{" "}
+                                {this.state.projectDetail.status === 0 && (
+                                    <span className="text-danger">
+                                        <i className="fa fa-times"></i> Pending
+                                    </span>
+                                )}{" "}
+                            </div>
+                            <div className="my-2">
+                                {this.state.projectDetail.description}
+                            </div>
+                        </div>
+                    )}
+                    {this.state.toggleEditProject && (
+                        <Projectedit
+                            project={this.state.projectDetail}
+                            onCompleteProjectEdit={this.onCompleteProjectEdit}
+                        />
+                    )}
 
                     {this.state.toggleAddTask && (
                         <Taskcreate

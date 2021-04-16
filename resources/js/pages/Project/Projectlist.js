@@ -62,10 +62,10 @@ class Projectlist extends React.Component {
                             </Card.Header>
                             <Card.Body>
                                 <Card.Text>{project.description}</Card.Text>
-                                <Tasklist
+                                {/* <Tasklist
                                     tasksList={project.tasks}
                                     isDetailsView={false}
-                                />
+                                /> */}
                                 <hr />
                                 <Link
                                     to={`${PUBLIC_URL}project/view/${project.id}`}

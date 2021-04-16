@@ -25,6 +25,7 @@ class ProjectRepository implements CrudInterface
         $project->name = $request->name;
         $project->description = $request->description;
         $project->user_id = $request->user_id;
+        $project->status = 0;
         $project->save();
         return $project;
     }
@@ -34,6 +35,7 @@ class ProjectRepository implements CrudInterface
         $project->name = $request->name;
         $project->description = $request->description;
         $project->user_id = $request->user_id;
+        $project->status = $request->status;
         $project->save();
         return $project;
     }
