@@ -3,6 +3,7 @@ import { Container, Button, Card, Badge, Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { getApiProjectLists } from "../../services/projectservice";
 import { PUBLIC_URL } from "../../constant";
+import Tasklist from "../Task/Tasklist";
 class Projectlist extends React.Component {
     state = {
         projectList: [],
@@ -61,6 +62,11 @@ class Projectlist extends React.Component {
                             </Card.Header>
                             <Card.Body>
                                 <Card.Text>{project.description}</Card.Text>
+                                <Tasklist
+                                    tasksList={project.tasks}
+                                    isDetailsView={false}
+                                />
+                                <hr />
                                 <Link
                                     to={`${PUBLIC_URL}project/view/${project.id}`}
                                 >
