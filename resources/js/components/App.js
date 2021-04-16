@@ -8,6 +8,8 @@ import Home from "../pages/Home";
 import About from "../pages/About";
 import Projectlist from "../pages/Project/Projectlist";
 import Projectcreate from "../pages/Project/Projectcreate";
+import Projectview from "../pages/Project/Projectview";
+// constant
 import { PUBLIC_URL } from "../constant";
 class App extends Component {
     render() {
@@ -15,19 +17,28 @@ class App extends Component {
             <Router>
                 <Header />
                 <Switch>
-                    <Route path={`${PUBLIC_URL}about`} exact>
-                        <About />
-                    </Route>
-                    <Route path={`${PUBLIC_URL}`} exact>
-                        <Home />
-                    </Route>
+                    <Route
+                        path={`${PUBLIC_URL}about`}
+                        exact
+                        component={About}
+                    />
+                    <Route path={`${PUBLIC_URL}`} exact component={Home} />
                     {/* project */}
-                    <Route path={`${PUBLIC_URL}project`} exact>
-                        <Projectlist />
-                    </Route>
-                    <Route path={`${PUBLIC_URL}project/create`} exact>
-                        <Projectcreate />
-                    </Route>
+                    <Route
+                        path={`${PUBLIC_URL}project`}
+                        exact
+                        component={Projectlist}
+                    />
+                    <Route
+                        path={`${PUBLIC_URL}project/create`}
+                        exact
+                        component={Projectcreate}
+                    />
+                    <Route
+                        path={`${PUBLIC_URL}project/view/:id`}
+                        exact
+                        component={Projectview}
+                    />
                 </Switch>
                 <Footer />
             </Router>

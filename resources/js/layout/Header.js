@@ -1,25 +1,25 @@
 import React, { useState } from "react";
 import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { PUBLIC_URL } from "../constant";
 const Header = () => {
-    const [publicUrl, setPublicUrl] = useState("/laravel-react-mytask/");
     return (
         <Navbar bg="dark" expand="lg" variant="dark" sticky="top">
             <Container>
-                <Link to={`${publicUrl}`}>
+                <Link to={`${PUBLIC_URL}`}>
                     <Navbar.Brand>Taks Management</Navbar.Brand>
                 </Link>
 
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
-                        <Link to={`${publicUrl}`}>
+                        <Link to={`${PUBLIC_URL}`}>
                             <Nav.Item className="nav-link">Home</Nav.Item>
                         </Link>
-                        <Link to={`${publicUrl}project`}>
+                        <Link to={`${PUBLIC_URL}project`}>
                             <Nav.Item className="nav-link">Project</Nav.Item>
                         </Link>
-                        <Link to={`${publicUrl}about`}>
+                        <Link to={`${PUBLIC_URL}about`}>
                             <Nav.Item className="nav-link">About</Nav.Item>
                         </Link>
                         <NavDropdown title="Dropdown" id="basic-nav-dropdown">

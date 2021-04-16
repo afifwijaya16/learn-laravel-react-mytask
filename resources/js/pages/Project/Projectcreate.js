@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Card, Container, Form, Spinner } from "react-bootstrap";
 import { Link, withRouter } from "react-router-dom";
 import { PUBLIC_URL } from "../../constant";
-import { storeApiNewProject } from "../../service/projectservice";
+import { storeApiNewProject } from "../../services/projectservice";
 class Projectcreate extends React.Component {
     state = {
         isLoading: false,

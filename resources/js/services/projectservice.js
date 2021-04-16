@@ -3,6 +3,9 @@ import Axios from "axios";
 export const getApiProjectLists = async () =>
     await Axios.get("http://localhost/laravel-react-mytask/api/projects");
 
+export const getApiProjectDetail = async id =>
+    await Axios.get(`http://localhost/laravel-react-mytask/api/projects/${id}`);
+
 export const storeApiNewProject = async data => {
     data.user_id = 1;
     return await Axios.post(
