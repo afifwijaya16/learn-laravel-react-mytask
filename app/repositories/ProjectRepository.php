@@ -42,6 +42,7 @@ class ProjectRepository implements CrudInterface
     public function delete($id)
     {
         $project = $this->findById($id);
+        $project->tasks()->delete();
         $project->delete();
         return $project;
     }

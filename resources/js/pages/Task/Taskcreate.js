@@ -109,7 +109,7 @@ class Takscreate extends React.Component {
 
                                 {!this.state.isLoading && (
                                     <Button variant="primary" type="submit">
-                                        Save Project
+                                        Save Task
                                     </Button>
                                 )}
                             </Form>

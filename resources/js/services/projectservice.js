@@ -24,3 +24,10 @@ export const updateApiProject = async (data, id) => {
         return res.data;
     });
 };
+export const deleteApiProject = async id => {
+    return await Axios.delete(
+        `http://localhost/laravel-react-mytask/api/projects/${id}`
+    ).then(res => {
+        return res.data;
+    });
+};

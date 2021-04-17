@@ -1,5 +1,13 @@
 import React from "react";
-import { Container, Button, Card, Badge, Spinner } from "react-bootstrap";
+import {
+    Container,
+    Button,
+    Card,
+    Badge,
+    Spinner,
+    InputGroup,
+    FormControl
+} from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { getApiProjectDetail } from "../../services/projectservice";
 import { PUBLIC_URL } from "../../constant";
@@ -10,6 +18,7 @@ class Projectview extends React.Component {
     state = {
         projectDetail: {},
         tasksList: [],
+        tasksListCount: [],
         isLoading: false,
         toggleAddTask: false,
         toggleEditProject: false
@@ -19,13 +28,14 @@ class Projectview extends React.Component {
         this.getProjectDetail();
     }
 
-    getProjectDetail = () => {
+    getProjectDetail = async () => {
         this.setState({ isLoading: true });
-        getApiProjectDetail(this.props.match.params.id).then(res => {
+        await getApiProjectDetail(this.props.match.params.id).then(res => {
             const projectDetail = res.data.data;
             this.setState({
                 projectDetail,
                 tasksList: projectDetail.tasks,
+                tasksListCount: projectDetail.tasks,
                 isLoading: false
             });
         });
@@ -60,6 +70,37 @@ class Projectview extends React.Component {
         });
         this.getProjectDetail();
         this.toggleEditProject();
+    };
+
+    onEditTask = () => {
+        this.getProjectDetail();
+    };
+
+    onSearchTask = e => {
+        this.setState({ isLoading: true });
+        const searchText = e.target.value;
+        if (searchText.length > 0) {
+            const searchData = this.state.tasksList.filter(function(item) {
+                const itemData = item.name + " " + item.description;
+                const textData = searchText.trim().toLowerCase();
+                return (
+                    itemData
+                        .trim()
+                        .toLowerCase()
+                        .indexOf(textData) !== -1
+                );
+            });
+            this.setState({
+                tasksList: searchData,
+                isLoading: false
+            });
+        } else {
+            this.setState({
+                searchText,
+                isLoading: false
+            });
+            this.getProjectDetail();
+        }
     };
 
     render() {
@@ -105,7 +146,21 @@ class Projectview extends React.Component {
                                 <h5>
                                     {this.state.projectDetail.name}{" "}
                                     <Badge variant="primary">
-                                        {this.state.tasksList.length}
+                                        {this.state.tasksListCount.length}
+                                    </Badge>{" "}
+                                    <Badge variant="success">
+                                        {
+                                            this.state.tasksListCount.filter(
+                                                task => task.status === 1
+                                            ).length
+                                        }
+                                    </Badge>{" "}
+                                    <Badge variant="danger">
+                                        {
+                                            this.state.tasksListCount.filter(
+                                                task => task.status === 0
+                                            ).length
+                                        }
                                     </Badge>
                                 </h5>
                             </div>
@@ -148,9 +203,23 @@ class Projectview extends React.Component {
                         </div>
                     )}
                     <hr />
+                    <div>
+                        <InputGroup>
+                            <FormControl
+                                placeholder="Search Task"
+                                onChange={e => this.onSearchTask(e)}
+                            />
+                            <InputGroup.Append>
+                                <InputGroup.Text>
+                                    <i className="fa fa-search"></i>
+                                </InputGroup.Text>
+                            </InputGroup.Append>
+                        </InputGroup>
+                    </div>
                     <Tasklist
                         tasksList={this.state.tasksList}
                         isDetailsView={true}
+                        onEditTask={this.onEditTask}
                     />
                 </Container>
             </>

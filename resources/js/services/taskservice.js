@@ -11,3 +11,20 @@ export const storeApiNewTask = async data => {
         return res.data;
     });
 };
+
+export const updateApiTask = async (id, data) => {
+    return await Axios.put(
+        `http://localhost/laravel-react-mytask/api/tasks/${id}`,
+        data
+    ).then(res => {
+        return res.data;
+    });
+};
+
+export const deleteApiTask = async id => {
+    return await Axios.delete(
+        `http://localhost/laravel-react-mytask/api/tasks/${id}`
+    ).then(res => {
+        return res.data;
+    });
+};
