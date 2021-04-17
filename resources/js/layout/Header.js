@@ -22,6 +22,12 @@ const Header = () => {
                         <Link to={`${PUBLIC_URL}about`}>
                             <Nav.Item className="nav-link">About</Nav.Item>
                         </Link>
+                        <Link to={`${PUBLIC_URL}register`}>
+                            <Nav.Item className="nav-link">Sign Up</Nav.Item>
+                        </Link>
+                        <Link to={`${PUBLIC_URL}login`}>
+                            <Nav.Item className="nav-link">Sign In</Nav.Item>
+                        </Link>
                         <NavDropdown title="Dropdown" id="basic-nav-dropdown">
                             <NavDropdown.Item href="#action/3.1">
                                 Action

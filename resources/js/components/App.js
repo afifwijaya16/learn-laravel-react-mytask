@@ -9,6 +9,8 @@ import About from "../pages/About";
 import Projectlist from "../pages/Project/Projectlist";
 import Projectcreate from "../pages/Project/Projectcreate";
 import Projectview from "../pages/Project/Projectview";
+import Register from "../pages/Auth/Register";
+import Login from "../pages/Auth/Login";
 // constant
 import { PUBLIC_URL } from "../constant";
 class App extends Component {
@@ -38,6 +40,17 @@ class App extends Component {
                         path={`${PUBLIC_URL}project/view/:id`}
                         exact
                         component={Projectview}
+                    />
+                    {/* auth */}
+                    <Route
+                        path={`${PUBLIC_URL}register`}
+                        exact
+                        component={Register}
+                    />
+                    <Route
+                        path={`${PUBLIC_URL}login`}
+                        exact
+                        component={Login}
                     />
                 </Switch>
                 <Footer />
