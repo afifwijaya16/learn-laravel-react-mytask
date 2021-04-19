@@ -13,11 +13,25 @@ import Register from "../pages/Auth/Register";
 import Login from "../pages/Auth/Login";
 // constant
 import { PUBLIC_URL } from "../constant";
+import { checkIfAuthenticated } from "../services/authservice";
+import AuthenticatedRoutes from "./AuthenticatedRoutes";
 class App extends Component {
+    state = {
+        user: {},
+        isLoggedIn: false
+    };
+    componentDidMount() {
+        if (checkIfAuthenticated()) {
+            this.setState({
+                user: checkIfAuthenticated(),
+                isLoggedIn: true
+            });
+        }
+    }
     render() {
         return (
             <Router>
-                <Header />
+                <Header authData={this.state} />
                 <Switch>
                     <Route
                         path={`${PUBLIC_URL}about`}
@@ -25,8 +39,8 @@ class App extends Component {
                         component={About}
                     />
                     <Route path={`${PUBLIC_URL}`} exact component={Home} />
-                    {/* project */}
-                    <Route
+
+                    {/* <Route
                         path={`${PUBLIC_URL}project`}
                         exact
                         component={Projectlist}
@@ -40,6 +54,23 @@ class App extends Component {
                         path={`${PUBLIC_URL}project/view/:id`}
                         exact
                         component={Projectview}
+                    /> */}
+                    <AuthenticatedRoutes
+                        authed={this.state.isLoggedIn}
+                        path={`${PUBLIC_URL}project/view/:id`}
+                        component={Projectview}
+                    />
+
+                    <AuthenticatedRoutes
+                        authed={this.state.isLoggedIn}
+                        path={`${PUBLIC_URL}project/create`}
+                        component={Projectcreate}
+                    />
+
+                    <AuthenticatedRoutes
+                        authed={this.state.isLoggedIn}
+                        path={`${PUBLIC_URL}project`}
+                        component={Projectlist}
                     />
                     {/* auth */}
                     <Route

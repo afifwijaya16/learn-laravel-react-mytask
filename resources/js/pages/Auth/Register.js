@@ -43,7 +43,6 @@ class Register extends React.Component {
             event.preventDefault();
             this.setState({ isLoading: true });
             const response = await registerUsers(postBody);
-            console.log("response register", response);
             if (response.success) {
                 this.setState({
                     name: "",
@@ -57,7 +56,7 @@ class Register extends React.Component {
                 localStorage.setItem("loginData", JSON.stringify(response));
                 // history.push(`${PUBLIC_URL}login`);
             } else {
-                console.log("response.errors", response.errors);
+                // console.log("response.errors", response.errors);
                 this.setState({
                     errors: response.errors,
                     isLoading: false
@@ -129,6 +128,7 @@ class Register extends React.Component {
                                         placeholder="Enter password"
                                         value={this.state.password}
                                         name="password"
+                                        autoComplete="off"
                                         onChange={e => this.changeInput(e)}
                                     />
                                     {this.state.errors &&
@@ -147,6 +147,7 @@ class Register extends React.Component {
                                     <Form.Control
                                         type="password"
                                         required
+                                        autoComplete="off"
                                         placeholder="Enter Confirm password"
                                         value={this.state.password_confirmation}
                                         name="password_confirmation"
