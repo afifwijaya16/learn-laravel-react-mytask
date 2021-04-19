@@ -10,8 +10,10 @@ class Register extends React.Component {
         email: "",
         password: "",
         password_confirmation: "",
-        errors: {}
+        errors: {},
+        validated: false
     };
+
     changeInput = e => {
         this.setState({
             [e.target.name]: e.target.value
@@ -19,33 +21,49 @@ class Register extends React.Component {
     };
 
     submitForm = async e => {
-        e.preventDefault();
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+
+        this.setState({
+            validated: true
+        });
+
         const { history } = this.props;
 
-        this.setState({ isLoading: true });
         const postBody = {
             name: this.state.name,
             email: this.state.email,
             password: this.state.password,
             password_confirmation: this.state.password_confirmation
         };
-        const response = await registerUsers(postBody);
-        console.log(response);
-        if (response.success) {
-            this.setState({
-                name: "",
-                email: "",
-                password: "",
-                password_confirmation: "",
-                isLoading: false,
-                errors: {}
-            });
-        } else {
-            console.log("response.errors", response.errors);
-            this.setState({
-                errors: response.errors,
-                isLoading: false
-            });
+        if (form.checkValidity() !== false) {
+            event.preventDefault();
+            this.setState({ isLoading: true });
+            const response = await registerUsers(postBody);
+            console.log("response register", response);
+            if (response.success) {
+                this.setState({
+                    name: "",
+                    email: "",
+                    password: "",
+                    password_confirmation: "",
+                    isLoading: false,
+                    errors: {},
+                    validated: false
+                });
+                localStorage.setItem("loginData", JSON.stringify(response));
+                // history.push(`${PUBLIC_URL}login`);
+            } else {
+                console.log("response.errors", response.errors);
+                this.setState({
+                    errors: response.errors,
+                    isLoading: false
+                });
+                localStorage.setItem("loginData", null);
+            }
         }
     };
     render() {
@@ -58,10 +76,15 @@ class Register extends React.Component {
                     <hr />
                     <Card>
                         <Card.Body>
-                            <Form onSubmit={this.submitForm}>
+                            <Form
+                                noValidate
+                                validated={this.state.validated}
+                                onSubmit={this.submitForm}
+                            >
                                 <Form.Group>
                                     <Form.Label>Name</Form.Label>
                                     <Form.Control
+                                        required
                                         type="text"
                                         placeholder="Enter Name"
                                         value={this.state.name}
@@ -74,10 +97,14 @@ class Register extends React.Component {
                                                 {this.state.errors.name[0]}
                                             </p>
                                         )}
+                                    <Form.Control.Feedback type="invalid">
+                                        Please give your name
+                                    </Form.Control.Feedback>
                                 </Form.Group>
                                 <Form.Group>
                                     <Form.Label>Email</Form.Label>
                                     <Form.Control
+                                        required
                                         type="text"
                                         placeholder="Enter Email"
                                         value={this.state.email}
@@ -90,10 +117,14 @@ class Register extends React.Component {
                                                 {this.state.errors.email[0]}
                                             </p>
                                         )}
+                                    <Form.Control.Feedback type="invalid">
+                                        Please give your valid email address
+                                    </Form.Control.Feedback>
                                 </Form.Group>
                                 <Form.Group>
                                     <Form.Label>Password</Form.Label>
                                     <Form.Control
+                                        required
                                         type="password"
                                         placeholder="Enter password"
                                         value={this.state.password}
@@ -106,12 +137,16 @@ class Register extends React.Component {
                                                 {this.state.errors.password[0]}
                                             </p>
                                         )}
+                                    <Form.Control.Feedback type="invalid">
+                                        Please give your password
+                                    </Form.Control.Feedback>
                                 </Form.Group>
 
                                 <Form.Group>
                                     <Form.Label>Confirm Password </Form.Label>
                                     <Form.Control
                                         type="password"
+                                        required
                                         placeholder="Enter Confirm password"
                                         value={this.state.password_confirmation}
                                         name="password_confirmation"
@@ -127,6 +162,9 @@ class Register extends React.Component {
                                                 }
                                             </p>
                                         )}
+                                    <Form.Control.Feedback type="invalid">
+                                        Please give your password confirmation
+                                    </Form.Control.Feedback>
                                 </Form.Group>
 
                                 {this.state.isLoading && (

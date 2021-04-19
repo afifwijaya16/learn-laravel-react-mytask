@@ -9,7 +9,6 @@ const Header = () => {
                 <Link to={`${PUBLIC_URL}`}>
                     <Navbar.Brand>Taks Management</Navbar.Brand>
                 </Link>
-
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
@@ -22,6 +21,8 @@ const Header = () => {
                         <Link to={`${PUBLIC_URL}about`}>
                             <Nav.Item className="nav-link">About</Nav.Item>
                         </Link>
+                    </Nav>
+                    <Nav className="ml-auto">
                         <Link to={`${PUBLIC_URL}register`}>
                             <Nav.Item className="nav-link">Sign Up</Nav.Item>
                         </Link>

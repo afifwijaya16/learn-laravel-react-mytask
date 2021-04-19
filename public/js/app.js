@@ -86437,7 +86437,9 @@ var Header = function Header() {
     to: "".concat(_constant__WEBPACK_IMPORTED_MODULE_3__["PUBLIC_URL"], "about")
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Nav"].Item, {
     className: "nav-link"
-  }, "About")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
+  }, "About"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Nav"], {
+    className: "ml-auto"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
     to: "".concat(_constant__WEBPACK_IMPORTED_MODULE_3__["PUBLIC_URL"], "register")
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Nav"].Item, {
     className: "nav-link"
@@ -86619,7 +86621,8 @@ var Register = /*#__PURE__*/function (_React$Component) {
       email: "",
       password: "",
       password_confirmation: "",
-      errors: {}
+      errors: {},
+      validated: false
     });
 
     _defineProperty(_assertThisInitialized(_this), "changeInput", function (e) {
@@ -86628,30 +86631,47 @@ var Register = /*#__PURE__*/function (_React$Component) {
 
     _defineProperty(_assertThisInitialized(_this), "submitForm", /*#__PURE__*/function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(e) {
-        var history, postBody, response;
+        var form, history, postBody, response;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                e.preventDefault();
-                history = _this.props.history;
+                form = event.currentTarget;
+
+                if (form.checkValidity() === false) {
+                  event.preventDefault();
+                  event.stopPropagation();
+                }
 
                 _this.setState({
-                  isLoading: true
+                  validated: true
                 });
 
+                history = _this.props.history;
                 postBody = {
                   name: _this.state.name,
                   email: _this.state.email,
                   password: _this.state.password,
                   password_confirmation: _this.state.password_confirmation
                 };
-                _context.next = 6;
+
+                if (!(form.checkValidity() !== false)) {
+                  _context.next = 13;
+                  break;
+                }
+
+                event.preventDefault();
+
+                _this.setState({
+                  isLoading: true
+                });
+
+                _context.next = 10;
                 return Object(_services_authservice__WEBPACK_IMPORTED_MODULE_4__["registerUsers"])(postBody);
 
-              case 6:
+              case 10:
                 response = _context.sent;
-                console.log(response);
+                console.log("response register", response);
 
                 if (response.success) {
                   _this.setState({
@@ -86660,8 +86680,11 @@ var Register = /*#__PURE__*/function (_React$Component) {
                     password: "",
                     password_confirmation: "",
                     isLoading: false,
-                    errors: {}
+                    errors: {},
+                    validated: false
                   });
+
+                  localStorage.setItem("loginData", JSON.stringify(response)); // history.push(`${PUBLIC_URL}login`);
                 } else {
                   console.log("response.errors", response.errors);
 
@@ -86669,9 +86692,11 @@ var Register = /*#__PURE__*/function (_React$Component) {
                     errors: response.errors,
                     isLoading: false
                   });
+
+                  localStorage.setItem("loginData", null);
                 }
 
-              case 9:
+              case 13:
               case "end":
                 return _context.stop();
             }
@@ -86697,8 +86722,11 @@ var Register = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "text-center"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h5", null, "Register")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("hr", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Card"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Card"].Body, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Form"], {
+        noValidate: true,
+        validated: this.state.validated,
         onSubmit: this.submitForm
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Form"].Group, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Form"].Label, null, "Name"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Form"].Control, {
+        required: true,
         type: "text",
         placeholder: "Enter Name",
         value: this.state.name,
@@ -86708,7 +86736,10 @@ var Register = /*#__PURE__*/function (_React$Component) {
         }
       }), this.state.errors && this.state.errors.name && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
         className: "text-danger"
-      }, this.state.errors.name[0])), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Form"].Group, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Form"].Label, null, "Email"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Form"].Control, {
+      }, this.state.errors.name[0]), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Form"].Control.Feedback, {
+        type: "invalid"
+      }, "Please give your name")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Form"].Group, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Form"].Label, null, "Email"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Form"].Control, {
+        required: true,
         type: "text",
         placeholder: "Enter Email",
         value: this.state.email,
@@ -86718,7 +86749,10 @@ var Register = /*#__PURE__*/function (_React$Component) {
         }
       }), this.state.errors && this.state.errors.email && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
         className: "text-danger"
-      }, this.state.errors.email[0])), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Form"].Group, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Form"].Label, null, "Password"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Form"].Control, {
+      }, this.state.errors.email[0]), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Form"].Control.Feedback, {
+        type: "invalid"
+      }, "Please give your valid email address")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Form"].Group, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Form"].Label, null, "Password"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Form"].Control, {
+        required: true,
         type: "password",
         placeholder: "Enter password",
         value: this.state.password,
@@ -86728,8 +86762,11 @@ var Register = /*#__PURE__*/function (_React$Component) {
         }
       }), this.state.errors && this.state.errors.password && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
         className: "text-danger"
-      }, this.state.errors.password[0])), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Form"].Group, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Form"].Label, null, "Confirm Password "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Form"].Control, {
+      }, this.state.errors.password[0]), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Form"].Control.Feedback, {
+        type: "invalid"
+      }, "Please give your password")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Form"].Group, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Form"].Label, null, "Confirm Password "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Form"].Control, {
         type: "password",
+        required: true,
         placeholder: "Enter Confirm password",
         value: this.state.password_confirmation,
         name: "password_confirmation",
@@ -86738,7 +86775,9 @@ var Register = /*#__PURE__*/function (_React$Component) {
         }
       }), this.state.errors && this.state.errors.password_confirmation && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
         className: "text-danger"
-      }, this.state.errors.password_confirmation[0])), this.state.isLoading && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Button"], {
+      }, this.state.errors.password_confirmation[0]), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Form"].Control.Feedback, {
+        type: "invalid"
+      }, "Please give your password confirmation")), this.state.isLoading && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Button"], {
         variant: "primary",
         type: "button",
         disabled: true
